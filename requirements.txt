@@ -1,0 +1,3 @@
+pip install requests
+pip install flask-sqlalchemy flask-login
+pip install pymysql
