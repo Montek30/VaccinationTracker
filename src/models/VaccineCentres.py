@@ -6,58 +6,61 @@ class VaccineCentres:
         pass
         
     def search(self, request_data):
-    	search_method = request_data.get("search_method", "")
-    	search_value = request_data.get("search_value", "")
-    	date = request_data.get("date", "")
+        search_method = request_data.get("search_method", "")
+        search_value = request_data.get("search_value", "")
+        date = request_data.get("date", "")
 
-    	result = {
-			'status': 1,
+        result = {
+            'status': 1,
 			'message':'',
 			'total': 0,
 			'data':[]
 		}
 
-    	if search_method not in ['pincode', 'district']:
-    		result['status'] = 0
-    		result['message'] = "Invalid Search Type"
+        if search_method not in ['pincode', 'district']:
+            result['status'] = 0
+            result['message'] = "Invalid Search Type"
+
+        if search_value == "":
+            result['status'] = 0
+            result['message'] = "Invalid Search Value"
     	
-    	if search_value == "":
-    		result['status'] = 0
-    		result['message'] = "Invalid Search Value"
-    	
-    	if date == "":
-    		result['status'] = 0
-    		result['message'] = "Invalid Date"
+        if date == "":
+            result['status'] = 0
+            result['message'] = "Invalid Date"
 
-    		
-    	if result['status'] == 1:
-	    	url = ROOT_API_URL
-	    	
-	    	if search_method == "pincode":
-	    		url += "/findByPin?pincode=" + search_value + "&date=" + date
-	    	else:
-	    		url += "/calendarByDistrict?district_id=" + search_value + "&date="+ date
+        if result['status'] == 1:
+            url = ROOT_API_URL
 
-	    	header = ROOT_API_HEADER
+            if search_method == "pincode":
+                url += "/findByPin?pincode=" + search_value + "&date=" + date
+            else:
+                url += "/calendarByDistrict?district_id=" + search_value + "&date="+ date
 
+            header = ROOT_API_HEADER
 	    	#API Call
-	    	response = requests.get(url, headers = header)
+            response = requests.get(url, headers = header)
 
-	    	if response.status_code == 200:
-	    		data = response.json()
-	    		
-	    		if search_method == "pincode":
-	    			res = self.modify_pincode_search_data(data)
-	    		else:
-	    			res = self.modify_district_search_data(data)
+            if response.status_code == 200:
+                data = response.json()
 
-	    		result['total'] = res['total']
-    			result['data'] = res['data']
-	    	else:
-	    		result['status'] = 0
-    			result['message'] = "Something went wrong!!"
-	    	
-    	return result
+                if search_method == "pincode":
+                    res = self.modify_pincode_search_data(data)
+                else:
+                    res = self.modify_district_search_data(data)
+                
+                if res['total'] == 0:
+                    result['status'] = 0
+                    result['message'] = "No Data"    
+
+                result['total'] = res['total']
+                result['data'] = res['data']
+            else:
+                result['status'] = 0
+                result['message'] = "Something went wrong!!"
+
+
+        return result
 
 
     def modify_district_search_data(self, data):
