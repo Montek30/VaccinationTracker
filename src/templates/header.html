@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark" style="height: 80px">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav ms-auto mb-0 h4">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main_bp.home') }}">Home</a>
+        </li>
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main_bp.profile') }}">Profile</a>
+        </li>
+        {% endif %}
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main_bp.faq') }}">FAQs</a>
+        </li>
+        
+        {% if current_user.is_authenticated == false %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('auth_bp.signup') }}">Signup</a>
+        </li>
+        {% endif %}
+        
+        {% if current_user.is_authenticated == false %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('auth_bp.login') }}">Log In</a>
+        </li>
+        {% endif %}
+
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('auth_bp.logout') }}">Logout</a>
+        </li>
+        {% endif%}
+
+      </ul>
+    </div>
+  </div>
+</nav>
