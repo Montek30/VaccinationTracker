@@ -104,3 +104,50 @@ class VaccineCentres:
     		
     	return return_data
 
+
+    def search_v2(self, request_data):
+        search_method = request_data.get("search_method", "")
+        search_value = request_data.get("search_value", "")
+        
+        result = {
+            'status': 1,
+            'message':'',
+            'total': 0,
+            'data':[]
+        }
+
+        if search_method not in ['pincode', 'district']:
+            result['status'] = 0
+            result['message'] = "Invalid Search Type"
+
+        if search_value == "":
+            result['status'] = 0
+            result['message'] = "Invalid Search Value"
+        
+        
+        if result['status'] == 1:
+            
+
+
+
+            if response.status_code == 200:
+                data = response.json()
+
+                if search_method == "pincode":
+                    res = self.modify_pincode_search_data(data)
+                else:
+                    res = self.modify_district_search_data(data)
+                
+                if res['total'] == 0:
+                    result['status'] = 0
+                    result['message'] = "No Data"    
+
+                result['total'] = res['total']
+                result['data'] = res['data']
+            else:
+                result['status'] = 0
+                result['message'] = "Something went wrong!!"
+
+
+        return result
+

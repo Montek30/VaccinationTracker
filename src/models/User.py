@@ -2,6 +2,7 @@ import requests
 from flask_login import UserMixin, login_user, logout_user, login_required
 from flask import render_template, redirect, url_for, flash
 from settings import db
+from constants import USER_ROLE
 
 class User(UserMixin, db.Model):
 
@@ -9,6 +10,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(20), unique=True)
     password = db.Column(db.String(20))
     name = db.Column(db.String(20))
+    role = db.Column(db.Integer)
 
     def login(self, request_data):
         user = User.query.filter_by(email=request_data['email']).first()
@@ -27,7 +29,11 @@ class User(UserMixin, db.Model):
             flash("Email already exists!")
             return redirect(url_for('auth_bp.signup'))
 
-        new_user = User(email=request_data['email'], name=request_data['name'], password=request_data['password'])
+
+        if request_data.get('role',0) == 0:
+            request_data['role'] = USER_ROLE
+
+        new_user = User(email=request_data['email'], name=request_data['name'], password=request_data['password'], role=request_data['role'])
 
         db.session.add(new_user)
         db.session.commit()

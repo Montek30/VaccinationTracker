@@ -1,5 +1,42 @@
+*************************************LINKS********************************************************
 login/logout link - https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login
+https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login
 
+*************************************TODO TASKS***************************************************
 booking system.
 docker
 chat functionality
+
+
+*************************************MYSQL DB*****************************************************
+db - vaccine_tracker
+
+create table vaccines(id int NOT NULL auto_increment, name varchar(20), status int, created int, PRIMARY KEY(id));
+
+
+create table vaccine_centre(id int NOT NULL auto_increment, name varchar(20), pincode int, status int default 1, created int, address varchar(50), PRIMARY KEY(id));
+
+
+create table vaccine_availability(id int NOT NULL auto_increment, vaccine_centre_id int, vaccine_id int, count int, PRIMARY KEY(id), FOREIGN KEY(vaccine_centre_id) REFERENCES vaccine_centre(id), FOREIGN KEY (vaccine_id) REFERENCES vaccines(id));
+
+
+create table vaccine_booking(id int NOT NULL auto_increment, user_id int, vaccine_centre_id int, vaccine_id int, created int, status int, PRIMARY KEY(id), FOREIGN KEY(vaccine_centre_id) REFERENCES vaccine_centre(id), FOREIGN KEY (vaccine_id) REFERENCES vaccines(id), FOREIGN KEY (user_id) REFERENCES user(id));
+
+alter table vaccines modify column status int NOT NULL DEFAULT 1;
+
+alter table vaccines modify column created int NOT NULL;
+
+alter table vaccine_centre modify column pincode int NOT NULL;
+
+alter table vaccine_centre modify column status int DEFAULT 1 NOT NULL;
+
+alter table vaccine_centre modify column created int NOT NULL;
+
+alter table vaccine_centre modify column address varchar(100) NOT NULL;
+
+alter table vaccine_centre drop column pincode;
+
+alter table vaccine_centre add column postcode varchar(10) NOT NULL;
+
+
+*************************************************************************************************

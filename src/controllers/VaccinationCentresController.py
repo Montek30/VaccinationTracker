@@ -7,8 +7,14 @@ def search():
 	request_data = {}
 	request_data['search_method'] = request.args.get('search_method', '')
 	request_data['search_value'] = request.args.get('search_value', '')
-	request_data['date'] = request.args.get('date', '')
+	request_data['version'] = request.args.get('version', 1)
 
 	obj = VaccineCentres()
-	data = obj.search(request_data)
+
+	if request_data['version'] == 1:
+		request_data['date'] = request.args.get('date', '')
+		data = obj.search(request_data)
+	else:
+		data = obj.search_v2(request_data)
+
 	return data

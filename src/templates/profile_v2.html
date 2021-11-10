@@ -1,0 +1,25 @@
+{% include "base.html" %}
+{% include "header.html" %} 
+
+<section class="bg-light">
+    <div>
+        <h2 style="padding:50px">Book Your <span class="text-danger">Vaccination Today</span></h2>
+        <div class="container bg-light p-5">
+            <form id="searchForm">
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="PIN Code" id="pin">
+                </div>
+                <div class="col">
+                    <button class="btn btn-danger" id="searchbtn_v2" class="text-danger">Search</button>
+                </div>
+            </div>
+            <div class="row text-danger" style="padding: 15px;" id="error"></div>
+            </form>
+        </div>
+        <table class="table bg-light"></table>
+    </div>
+</section>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="static/js/profile.js"></script>
