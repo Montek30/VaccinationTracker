@@ -5,7 +5,7 @@ from routes.vaccination_centre_bp import vaccination_centre_bp
 from routes.main_bp import main_bp
 from routes.vaccine_availability_bp import vaccine_availability_bp
 from settings import db
-
+from models.Models import UserModel
 
 app = Flask(__name__)
 
@@ -25,11 +25,10 @@ login_manager.login_view = 'auth_bp.login'
 login_manager.init_app(app)
 
 
-from models.User import User
 @login_manager.user_loader
 def load_user(user_id):
     # since the user_id is just the primary key of our user table, use it in the query for the user
-    return User.query.get(int(user_id))
+    return UserModel.query.get(int(user_id))
 
 if __name__ == '__main__':
     app.debug = True

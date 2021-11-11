@@ -38,5 +38,8 @@ alter table vaccine_centre drop column pincode;
 
 alter table vaccine_centre add column postcode varchar(10) NOT NULL;
 
+MAIN SEARCH QUERY:
+select v.id vaccine_id, v.name vaccine_name, vc.id vaccine_centre_id, vc.name vaccine_centre_name, vc.address, va.id, va.count from vaccine_availability va inner join vaccines v on va.vaccine_id = v.id inner join vaccine_centres vc on vc.id=va.vaccine_centre_id where va.count>0 and v.status =1 and vc.status = 1 and postcode="E138SL";
+
 
 *************************************************************************************************

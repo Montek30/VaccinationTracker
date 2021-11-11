@@ -3,17 +3,18 @@ from flask_login import UserMixin, login_user, logout_user, login_required
 from flask import render_template, redirect, url_for, flash
 from settings import db
 from constants import USER_ROLE
+from models.Models import UserModel
 
-class User(UserMixin, db.Model):
+class User():
 
-    id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
-    email = db.Column(db.String(20), unique=True)
-    password = db.Column(db.String(20))
-    name = db.Column(db.String(20))
-    role = db.Column(db.Integer)
+    # id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
+    # email = db.Column(db.String(20), unique=True)
+    # password = db.Column(db.String(20))
+    # name = db.Column(db.String(20))
+    # role = db.Column(db.Integer)
 
     def login(self, request_data):
-        user = User.query.filter_by(email=request_data['email']).first()
+        user = UserModel.query.filter_by(email=request_data['email']).first()
 
         if not user or user.password != request_data['password']:
             flash('Please check your login details and try again.')
@@ -23,7 +24,7 @@ class User(UserMixin, db.Model):
         return redirect(url_for('main_bp.profile'))
 
     def signup(self, request_data):
-        user = User.query.filter_by(email=request_data['email']).first()
+        user = UserModel.query.filter_by(email=request_data['email']).first()
 
         if user:
             flash("Email already exists!")
@@ -33,7 +34,7 @@ class User(UserMixin, db.Model):
         if request_data.get('role',0) == 0:
             request_data['role'] = USER_ROLE
 
-        new_user = User(email=request_data['email'], name=request_data['name'], password=request_data['password'], role=request_data['role'])
+        new_user = UserModel(email=request_data['email'], name=request_data['name'], password=request_data['password'], role=request_data['role'])
 
         db.session.add(new_user)
         db.session.commit()

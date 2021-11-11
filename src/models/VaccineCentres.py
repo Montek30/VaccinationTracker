@@ -1,10 +1,16 @@
 from constants import ROOT_API_URL, ROOT_API_HEADER
+from settings import db
+from models.VaccineAvailability import VaccineAvailability
 import requests
 
-class VaccineCentres:
-    def __init__(self):
-        pass
-        
+class VaccineCentres():
+    # id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
+    # name = db.Column(db.String(100))
+    # status = db.Column(db.Integer)
+    # created = db.Column(db.Integer)
+    # address = db.Column(db.String(100))
+    # postcode = db.Column(db.String(10))
+
     def search(self, request_data):
         search_method = request_data.get("search_method", "")
         search_value = request_data.get("search_value", "")
@@ -126,28 +132,17 @@ class VaccineCentres:
         
         
         if result['status'] == 1:
-            
+            res  = {}
+            obj = VaccineAvailability()
+            res = obj.get_data_by_pincode({'pincode':search_value})
 
-
-
-            if response.status_code == 200:
-                data = response.json()
-
-                if search_method == "pincode":
-                    res = self.modify_pincode_search_data(data)
-                else:
-                    res = self.modify_district_search_data(data)
-                
-                if res['total'] == 0:
-                    result['status'] = 0
-                    result['message'] = "No Data"    
-
-                result['total'] = res['total']
-                result['data'] = res['data']
-            else:
+            if res['status'] == 0:
                 result['status'] = 0
-                result['message'] = "Something went wrong!!"
+                result['message'] = "No Data"    
 
+            result['status'] = res['status']
+            result['data'] = res['data']
+        
 
         return result
 
