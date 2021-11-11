@@ -13,8 +13,15 @@ class VaccineAvailability():
     def get_data_by_pincode(self, request_data):
         return_data = {}
         return_data['status'] = 1
+        return_data['message'] = ''
         return_data['data'] = []
+
+        if request_data.get("pincode", "") == "":
+            return_data['status'] = 0
+            return_data['message'] = 'Enter Pincode'
+            return return_data
         
+
         li = VaccineAvailabilityModel.query\
                     .join(VaccinesModel, VaccinesModel.id==VaccineAvailabilityModel.vaccine_id)\
                     .join(VaccineCentresModel, VaccineCentresModel.id==VaccineAvailabilityModel.vaccine_centre_id)\

@@ -138,11 +138,9 @@ class VaccineCentres():
 
             if res['status'] == 0:
                 result['status'] = 0
-                result['message'] = "No Data"    
+                result['message'] = res['message']    
 
             result['status'] = res['status']
             result['data'] = res['data']
         
-
         return result
-
