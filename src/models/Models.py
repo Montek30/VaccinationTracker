@@ -12,15 +12,6 @@ class UserModel(UserMixin, db.Model):
 	role = db.Column(db.Integer)
 
 
-class VaccineAvailabilityModel(db.Model):
-    __tablename__ = 'vaccine_availability'
-    
-    id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
-    vaccine_centre_id = db.Column(db.Integer, db.ForeignKey('VaccineCentresModel.id'), nullable=False)
-    vaccine_id = db.Column(db.Integer, db.ForeignKey('VaccinesModel.id'), nullable=False)
-    count = db.Column(db.Integer)
-
-
 class VaccinesModel(db.Model):
     __tablename__ = 'vaccines'
     
@@ -41,12 +32,21 @@ class VaccineCentresModel(db.Model):
     postcode = db.Column(db.String(10))
 
 
+class VaccineAvailabilityModel(db.Model):
+    __tablename__ = 'vaccine_availability'
+    
+    id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
+    vaccine_centre_id = db.Column(db.Integer, db.ForeignKey(VaccineCentresModel.id), nullable=False)
+    vaccine_id = db.Column(db.Integer, db.ForeignKey(VaccinesModel.id), nullable=False)
+    count = db.Column(db.Integer)
+
+
 class VaccineBookingModel(db.Model):
     __tablename__ = 'vaccine_booking'
 
     id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
-    user_id = db.Column(db.Integer, db.ForeignKey('UserModel.id'), nullable=False)
-    vaccine_id = db.Column(db.Integer, db.ForeignKey('VaccinesModel.id'), nullable=False)
-    vaccine_centre_id = db.Column(db.Integer, db.ForeignKey('VaccineCentresModel.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(UserModel.id), nullable=False)
+    vaccine_id = db.Column(db.Integer, db.ForeignKey(VaccinesModel.id), nullable=False)
+    vaccine_centre_id = db.Column(db.Integer, db.ForeignKey(VaccineCentresModel.id), nullable=False)
     status = db.Column(db.Integer)
     created = db.Column(db.Integer)

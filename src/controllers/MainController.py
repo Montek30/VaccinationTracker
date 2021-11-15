@@ -6,7 +6,7 @@ def home():
 
 @login_required
 def profile():
-	return render_template('profile_v2.html', name=current_user.name)
+	return render_template('profile_v2.html', name=current_user.name, id=current_user.id)
 	# return render_template('profile.html', name=current_user.name)
 
 def faq():

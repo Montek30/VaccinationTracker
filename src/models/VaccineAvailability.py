@@ -20,7 +20,6 @@ class VaccineAvailability():
             return_data['status'] = 0
             return_data['message'] = 'Enter Pincode'
             return return_data
-        
 
         li = VaccineAvailabilityModel.query\
                     .join(VaccinesModel, VaccinesModel.id==VaccineAvailabilityModel.vaccine_id)\

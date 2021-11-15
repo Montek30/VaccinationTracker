@@ -1,7 +1,8 @@
 import requests
 from flask_login import UserMixin, login_user, logout_user, login_required
 from flask import render_template, redirect, url_for, flash
-from settings import db
+from flask_mail import Message
+from settings import db, mail
 from constants import USER_ROLE
 from models.Models import UserModel
 
@@ -44,3 +45,8 @@ class User():
     def logout(self):
         logout_user()  
         return redirect(url_for('main_bp.home'))
+
+    def send_mail(self, request_data):
+        msg = Message(request_data['subject'], sender = request_data['from'], recipients = [request_data['to']])
+        msg.body = request_data['body']
+        mail.send(msg)

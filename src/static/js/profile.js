@@ -38,7 +38,8 @@ $(document).ready(function(){
 
 		$("table.table").html("");
 		$("#error").html("");
-
+		
+		user_id = $("#user_id").val()
 		var formData = {
 	    	search_value: $("#pin").val(),
 	    	search_method: "pincode",
@@ -51,16 +52,53 @@ $(document).ready(function(){
 	        data: formData,
 	        dataType: "json",
 	    }).done(function (data) {
-
+	    	
 	    	//do handling here
 	    	if(data['status'] == 0){
 	    		$("#error").html(data['message'])	
 	    	}else{
-			    $("table.table").append("<tr><th>NAME</th><th>POSTCODE</th><th>ADDRESS</th><th>VACCINE</th><th>AVAILABLE DOSE</th></tr>");
+			    $("table.table").append("<tr><th>NAME</th><th>POSTCODE</th><th>ADDRESS</th><th>VACCINE</th><th>AVAILABLE DOSE</th><th>BOOK APPOINTMENT</th></tr>");
 	    		$.each(data['data'], function(i, data){
-			    	$("table.table").append("<tr><td>" + data.vaccine_centre_name + "</td><td>" + data.postcode + "</td><td>" + data.address + "</td><td>" + data.vaccine_name + "</td><td>"+ data.count +"</td></tr>");
+	    			append_str = "<tr><td>" + data.vaccine_centre_name + "</td><td>" + data.postcode + "</td><td>" + data.address + "</td><td>" + data.vaccine_name + "</td><td>"+ data.count +"</td>"
+			    	
+			    	if(data.count>0){
+			    		append_str += "<td><input type='button' onClick=bookAppointment("+data.vaccine_id+","+data.vaccine_centre_id+","+user_id+") value='Book' /></td>"
+			    	}else{
+			    		append_str += "<td>Not Available</td>"
+			    	}
+
+			    	append_str += "</tr>"
+
+			    	$("table.table").append(append_str);
 				})
 	    	}
 	    });
 	});
 });
+
+
+function bookAppointment(vaccine_id, vaccine_centre_id, user_id){
+	
+	$("#error").html("");
+	var formData = {
+    	vaccine_id: vaccine_id,
+    	vaccine_centre_id: vaccine_centre_id,
+    	user_id: user_id
+    };
+
+    $.ajax({
+    	type: "POST",
+        url: "/vaccine/booking",
+        data: formData,
+        dataType: "json",
+    }).done(function (data) {
+    	
+    	if(data['status'] == 0){
+	    	$("#error").html(data['message'])	
+	    }else{
+			alert("Success")
+		}
+    	//do handling here
+    	console.log(data)
+    });
+}
