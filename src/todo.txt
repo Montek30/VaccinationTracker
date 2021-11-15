@@ -3,7 +3,7 @@ login/logout link - https://www.digitalocean.com/community/tutorials/how-to-add-
 https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login
 
 *************************************TODO TASKS***************************************************
-booking system.
+booking system. (done)
 docker
 chat functionality
 
@@ -44,7 +44,6 @@ select v.id vaccine_id, v.name vaccine_name, vc.id vaccine_centre_id, vc.name va
 
 *********************************************SENDING EMAIL****************************************************
 https://stackoverflow.com/questions/16512592/login-credentials-not-working-with-gmail-smtp
-
 go to link and enable the permission
 
 

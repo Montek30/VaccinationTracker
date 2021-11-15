@@ -2,7 +2,7 @@ import requests
 import time
 from flask_mail import Message
 from flask import render_template, redirect, url_for, flash
-from models.Models import VaccineBookingModel, VaccinesModel, UserModel, VaccineCentresModel
+from models.Models import VaccineBookingModel, VaccinesModel, UserModel, VaccineCentresModel, VaccineAvailabilityModel
 from settings import db, mail
 from models.User import User
 from models.VaccineBooking import VaccineBooking
@@ -45,8 +45,9 @@ class Vaccine():
         u_obj = UserModel.query.filter_by(id=request_data['user_id']).first()
         v_obj = VaccinesModel.query.filter_by(id=request_data['vaccine_id']).first()
         vc_obj = VaccineCentresModel.query.filter_by(id=request_data['vaccine_centre_id']).first()
-
-        if u_obj is None or v_obj is None or vc_obj is None:
+        va_obj = VaccineAvailabilityModel.query.filter_by(vaccine_centre_id=request_data['vaccine_centre_id'], vaccine_id=request_data['vaccine_id']).first()
+        
+        if u_obj is None or v_obj is None or vc_obj is None or va_obj is None:
             return_data['status'] = 0
             return_data['message'] = "Invalid Input"
             return return_data
@@ -55,6 +56,10 @@ class Vaccine():
             , vaccine_centre_id=request_data['vaccine_centre_id'], status=1, created=int(time.time()))
 
         db.session.add(new_booking)
+        db.session.commit()
+        
+
+        va_obj.count -= 1
         db.session.commit()
         
         vcb_obj = VaccineBooking()
@@ -69,10 +74,6 @@ class Vaccine():
         user_obj = User()
         user_obj.send_mail(mail_data)
         
-        # msg = Message('Hello', sender = 'monteksingh30@gmail.com', recipients = ['u2098466@uel.ac.uk'])
-        # msg.body = "Hello Flask message sent from Flask-Mail"
-        # mail.send(msg)
-
         return_data['data']['booking_id'] = new_booking.id
         return return_data
 
