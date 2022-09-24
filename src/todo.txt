@@ -1,3 +1,8 @@
+******************************************ACTVATING THE SITE***************************
+activate the flask environment
+run the mysql
+run app.py 
+
 *************************************LINKS********************************************************
 login/logout link - https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login
 https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login

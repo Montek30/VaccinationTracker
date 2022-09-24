@@ -28,8 +28,8 @@ app.register_blueprint(vaccine_bp, url_prefix='/vaccine')
 app.register_blueprint(vaccine_booking_bp, url_prefix='/vaccine_booking')
 
 app.config['SECRET_KEY'] = '!@#montek@@!!'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/vaccine_tracker'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@127.0.0.1:3306/vaccine_tracker'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db.init_app(app)
 mail.init_app(app)
